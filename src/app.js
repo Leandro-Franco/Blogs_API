@@ -1,4 +1,6 @@
 const express = require('express');
+const loginControl = require('./controllers/login.controllers');
+const validations = require('./middlewares/auth.login');
 
 // ...
 
@@ -10,6 +12,8 @@ app.get('/', (_request, response) => {
 });
 
 app.use(express.json());
+
+app.post('/login', validations, loginControl);
 
 // ...
 // commit
