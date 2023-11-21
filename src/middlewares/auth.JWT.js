@@ -9,7 +9,7 @@ const checkToken = async (req, res, next) => {
   const extractToken = (token) => token.split(' ')[1];
   
   if (!Authorization || Authorization === '') {
-    return res.status(401).json({ error: 'Token not found' });
+    return res.status(401).json({ message: 'Token not found' });
   }
   try {
     const token = extractToken(Authorization);

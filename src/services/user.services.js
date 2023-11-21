@@ -7,6 +7,18 @@ const allUser = async () => {
   return { status: 200, response: users };
 };
 
+const findUser = async (id) => {
+  // é possivel usar 'find by pk{pk, {_outro comando_}}'
+  const user = await User.findOne({
+    where: { id },
+    attributes: { exclude: ['password'] },
+  });
+  if (!user || user === '') { 
+    return { status: 404, response: { message: 'User does not exist' } }; 
+  }
+  return { status: 200, response: user };
+};
+
 const newUser = async (userObj) => {
   const { displayName, email, password, image } = userObj;
   const userCheck = await User.findOne({ where: { email } });
@@ -20,4 +32,4 @@ const newUser = async (userObj) => {
   return { status: 201, response: { token } };
 };
 
-module.exports = { newUser, allUser };
+module.exports = { newUser, findUser, allUser };
