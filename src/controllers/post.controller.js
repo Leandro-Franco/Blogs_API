@@ -1,4 +1,4 @@
-const { addPost, idPost, allPost } = require('../services/post.services');
+const { allPost, idPost, attPost, addPost, delPost } = require('../services/post.services');
 
 const postAll = async (req, res) => {
   const post = await allPost();
@@ -11,6 +11,14 @@ const postId = async (req, res) => {
   return res.status(post.status).json(post.response);
 };
 
+const postAtt = async (req, res) => {
+  // const id = parseInt(req.user, 10);
+  const { id } = req.params;
+  const objPost = req.body;
+  const post = await attPost(objPost, id);
+  return res.status(post.status).json(post.response);
+};
+
 const postAdd = async (req, res) => {
   const id = parseInt(req.user, 10);
   const objPost = req.body;
@@ -18,4 +26,11 @@ const postAdd = async (req, res) => {
   return res.status(post.status).json(post.response);
 };
 
-module.exports = { postAll, postAdd, postId };
+const postDel = async (req, res) => {
+  const userId = req.user;
+  const { id } = req.params;
+  const del = await delPost(id, userId);
+  return res.status(del.status).end();
+};
+
+module.exports = { postAll, postId, postAtt, postAdd, postDel };

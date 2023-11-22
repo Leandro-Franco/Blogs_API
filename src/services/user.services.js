@@ -32,4 +32,9 @@ const newUser = async (userObj) => {
   return { status: 201, response: { token } };
 };
 
-module.exports = { newUser, findUser, allUser };
+const delUser = async (id) => {
+  await User.destroy({ where: { id } });
+  return { status: 204 };
+};
+
+module.exports = { newUser, findUser, allUser, delUser };

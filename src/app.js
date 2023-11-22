@@ -1,10 +1,11 @@
 const express = require('express');
 const loginControl = require('./controllers/login.controllers');
-const { userAll, userFind, userAdd } = require('./controllers/user.controllers');
+const { userAll, userFind, userAdd, userDel } = require('./controllers/user.controllers');
 const { categoryAdd, categoryAll } = require('./controllers/category.controllers');
-const { postAll, postAdd, postId } = require('./controllers/post.controller');
+const { postAll, postId, postAtt, postAdd, postDel } = require('./controllers/post.controller');
 const validations = require('./middlewares/auth.login');
-const { postCheck, checkCategory, checkId } = require('./middlewares/auth.post');
+const { postCheck, checkCategory,
+  checkId, checkUser, checkUserToDELETE } = require('./middlewares/auth.post');
 const { displayNameCheck, emailCheck, passwordCheck } = require('./middlewares/auth.user');
 const checkToken = require('./middlewares/auth.JWT');
 
@@ -21,9 +22,15 @@ app.use(express.json());
 
 app.get('/user', checkToken, userAll);
 
+app.delete('/user/me', checkToken, userDel);
+
 app.get('/post', checkToken, postAll);
 
 app.get('/post/:id', checkToken, checkId, postId);
+
+app.put('/post/:id', checkToken, checkUser, postCheck, postAtt);
+
+app.delete('/post/:id', checkToken, checkId, checkUserToDELETE, postDel);
 
 app.get('/user/:id', checkToken, userFind);
 
